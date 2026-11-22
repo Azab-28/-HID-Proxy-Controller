@@ -1,0 +1,45 @@
+[project]
+name = "hid-proxy-controller"
+version = "1.0.0"
+description = "Human Interface Device Proxy Controller for Embedded Devices"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "pyside6>=6.6.0",
+    "pyserial>=3.5",
+    "pystray>=0.19.5",
+    "psutil>=5.9.0",
+    "pywin32>=306",
+    "numpy>=1.24.0",
+    "tomli>=2.0.0",
+    "tomli-w>=1.0.0",
+    "cryptography>=41.0.0",
+    "watchdog>=3.0.0",
+    "pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4.0", "ruff>=0.1.0", "mypy>=1.7.0"]
+cv = ["opencv-python>=4.8.0", "ultralytics>=8.0.0", "dxcam>=0.1.4"]
+
+[project.scripts]
+hid-proxy = "hid_proxy.__main__:main"
+
+[tool.nuitka]
+module-name = "hid_proxy"
+main = "src/hid_proxy/__main__.py"
+output-dir = "dist"
+onefile = true
+windows-console-mode = "disable"
+windows-icon-from-ico = "src/hid_proxy/ui/resources/icons/tray_idle.ico"
+include-package-data = ["hid_proxy.ui.resources"]
+# windows-uac-admin = "asInvoker"  # Removed force admin; serial port access doesn't require elevation
+enable-plugins = ["pyside6", "numpy", "cryptography"]
+follow-imports = true
+remove-output = true
+assume-yes-for-downloads = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
